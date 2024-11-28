@@ -72,8 +72,6 @@ echo "Query yang dijalankan:" >> $REPORT_FILE
 # Gabungkan baris multi-line query
 awk '/Query/ {query=$0; getline; while($0 ~ /^[ ]+/) {query=query" "$0; getline}; print query}' $LOG_FILE >> $REPORT_FILE
 
-awk 'BEGIN {ORS=" "} /Query/ {print $0} /;/ {print "\n"}' $LOG_FILE >> $REPORT_FILE
-
 # Tambahkan daftar akses login
 echo "=====================================" >> $REPORT_FILE
 echo "Login Pengguna:" >> $REPORT_FILE

@@ -18,7 +18,9 @@ fi
 echo "Laporan Aktivitas Database - $(date)" > $REPORT_FILE
 echo "=====================================" >> $REPORT_FILE
 echo "Query yang dijalankan:" >> $REPORT_FILE
-grep "Query" "$LOG_FILE" >> $REPORT_FILE
+
+# Gabungkan baris multi-line query
+awk '/Query/ {query=$0; getline; while($0 ~ /^[ ]+/) {query=query" "$0; getline}; print query}' $LOG_FILE >> $REPORT_FILE
 
 # Tambahkan daftar akses login
 echo "=====================================" >> $REPORT_FILE

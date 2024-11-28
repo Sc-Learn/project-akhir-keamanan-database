@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS admin (
 CREATE TABLE IF NOT EXISTS student (
   student_id VARCHAR(36) PRIMARY KEY DEFAULT uuid(),
   name VARCHAR(50) NOT NULL,
-  phone_number VARCHAR(15) NOT NULL,
+  phone_number VARBINARY(15) NOT NULL,
   last_education ENUM('SMA/SMK', 'D3', 'S1', 'others') NOT NULL,
   email VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
@@ -145,7 +145,7 @@ CREATE USER 'admin'@'localhost' IDENTIFIED BY 'aP521%^-';
 CREATE USER 'dba'@'localhost' IDENTIFIED BY 'A5w9#93T';
 CREATE USER 'developer'@'localhost' IDENTIFIED BY '(1q90Lh(';
 CREATE USER 'analyst'@'localhost' IDENTIFIED BY 'Z6d07xX,';
-CREATE USER 'student'@'localhost' IDENTIFIED BY '?C6\!e63';
+CREATE USER 'student'@'localhost' IDENTIFIED BY '?C6A!e63';
 CREATE USER 'instructor'@'localhost' IDENTIFIED BY '[84tK4$7';
 
 

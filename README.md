@@ -40,6 +40,12 @@ SET GLOBAL general_log = 'ON';
 SET GLOBAL general_log_file = '/opt/lampp/var/mysql/general.log';
 ```
 
+ubah akses file agar user yang sedang login bisa membaca file log
+```bash
+sudo chown $(whoami):$(whoami) /opt/lampp/var/mysql/general.log
+sudo chmod 644 /opt/lampp/var/mysql/general.log
+```
+
 Setelah general log aktif, Anda bisa mengekstrak informasi penting dari file log untuk membuat laporan berkala tentang aktivitas database. Misalnya, Anda bisa membuat script bash atau program untuk membaca file log dan menghasilkan laporan.
 ```bash
 #!/bin/bash
@@ -62,7 +68,10 @@ fi
 echo "Laporan Aktivitas Database - $(date)" > $REPORT_FILE
 echo "=====================================" >> $REPORT_FILE
 echo "Query yang dijalankan:" >> $REPORT_FILE
-grep "Query" "$LOG_FILE" >> $REPORT_FILE
+
+# Gabungkan baris multi-line query
+awk '/Query/ {query=$0; getline; while($0 ~ /^[ ]+/) {query=query" "$0; getline}; print query}' $LOG_FILE >> $REPORT_FILE
+
 
 # Tambahkan daftar akses login
 echo "=====================================" >> $REPORT_FILE
@@ -77,6 +86,12 @@ echo "Total Login:" $(grep -c "Connect" "$LOG_FILE") >> $REPORT_FILE
 
 # Cetak hasil laporan ke terminal
 cat $REPORT_FILE
+```
+
+jalankan kode ini untuk membuat file bisa exutable
+```bash
+chmod +x generate_report.sh
+./generate_report.sh
 ```
 
 Penjelasan:

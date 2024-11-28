@@ -112,11 +112,10 @@ menggunakan cron job, berikut script untuk backup dan hapus backup lama untuk me
 #!/bin/bash
 
 # Konfigurasi
-MYSQL_CONTAINER_NAME="mysql-container"
 MYSQL_USER="root"
-MYSQL_PASSWORD="YourPassword"
+MYSQL_PASSWORD=""
 MYSQL_DB_NAME="online_course"
-BACKUP_DIR="/path/to/backup"
+BACKUP_DIR="/home/imyourdream/Downloads"
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 BACKUP_FILE="$BACKUP_DIR/online_course_backup_$DATE.sql"
 MAX_BACKUPS=7  # Maksimal file backup yang disimpan
@@ -126,7 +125,7 @@ mkdir -p "$BACKUP_DIR"
 
 # Melakukan backup database
 echo "Mulai backup database MySQL..."
-docker exec $MYSQL_CONTAINER_NAME mysqldump -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB_NAME > "$BACKUP_FILE"
+mysqldump -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB_NAME > "$BACKUP_FILE"
 
 # Memeriksa apakah backup berhasil
 if [ $? -eq 0 ]; then

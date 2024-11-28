@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS admin (
 CREATE TABLE IF NOT EXISTS student (
   student_id VARCHAR(36) PRIMARY KEY DEFAULT uuid(),
   name VARCHAR(50) NOT NULL,
-  phone_number VARBINARY(15) NOT NULL,
+  phone_number VARBINARY(32) NOT NULL,
   last_education ENUM('SMA/SMK', 'D3', 'S1', 'others') NOT NULL,
   email VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,

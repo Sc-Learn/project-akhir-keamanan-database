@@ -35,34 +35,47 @@ aktifkan general log di mysql
 General log mencatat semua aktivitas klien, termasuk kueri yang dijalankan.
 Keuntungan: Mempermudah identifikasi aktivitas mencurigakan.
 Langkah Aktivasi:
-1. Masuk ke container MySQL
-2. Aktifkan general log
 ```bash
-docker exec -it <mysql_container_name> mysql -u<user> -p<password>
 SET GLOBAL general_log = 'ON';
-SET GLOBAL general_log_file = '/var/lib/mysql/general.log';
+SET GLOBAL general_log_file = '/opt/lampp/var/mysql/general.log';
 ```
 
 Setelah general log aktif, Anda bisa mengekstrak informasi penting dari file log untuk membuat laporan berkala tentang aktivitas database. Misalnya, Anda bisa membuat script bash atau program untuk membaca file log dan menghasilkan laporan.
 ```bash
 #!/bin/bash
 
-# Path ke file general log
-LOG_FILE="/var/log/mysql/general.log"
-REPORT_FILE="/path/to/reports/database_activity_report_$(date +%Y-%m-%d).txt"
+# Path ke file general log (sesuaikan path berdasarkan instalasi XAMPP Anda)
+LOG_FILE="/opt/lampp/var/mysql/general.log"
+REPORT_DIR="/home/imyourdream/Downloads"
+REPORT_FILE="$REPORT_DIR/database_activity_report_$(date +%Y-%m-%d).txt"
 
-# Filter dan analisis query tertentu (misalnya, akses dari user tertentu)
+# Buat direktori laporan jika belum ada
+mkdir -p $REPORT_DIR
+
+# Periksa apakah file general log ada
+if [ ! -f "$LOG_FILE" ]; then
+  echo "File general log tidak ditemukan di $LOG_FILE"
+  exit 1
+fi
+
+# Buat laporan
 echo "Laporan Aktivitas Database - $(date)" > $REPORT_FILE
 echo "=====================================" >> $REPORT_FILE
 echo "Query yang dijalankan:" >> $REPORT_FILE
-grep "Query" $LOG_FILE >> $REPORT_FILE
+grep "Query" "$LOG_FILE" >> $REPORT_FILE
 
-# Misalnya, dapatkan daftar akses login
+# Tambahkan daftar akses login
 echo "=====================================" >> $REPORT_FILE
 echo "Login Pengguna:" >> $REPORT_FILE
-grep "Connect" $LOG_FILE >> $REPORT_FILE
+grep "Connect" "$LOG_FILE" >> $REPORT_FILE
 
-# Cetak hasil
+# Tambahkan ringkasan jumlah aktivitas
+echo "=====================================" >> $REPORT_FILE
+echo "Ringkasan Aktivitas:" >> $REPORT_FILE
+echo "Total Query:" $(grep -c "Query" "$LOG_FILE") >> $REPORT_FILE
+echo "Total Login:" $(grep -c "Connect" "$LOG_FILE") >> $REPORT_FILE
+
+# Cetak hasil laporan ke terminal
 cat $REPORT_FILE
 ```
 
@@ -76,7 +89,7 @@ Anda bisa menyesuaikan script ini untuk mencari pola lain yang relevan, misalnya
 Automatisasi Laporan Berkala dengan Cron Job
 ```bash
 crontab -e
-0 8 * * * /path/to/script/database_activity_report.sh
+0 8 * * * /home/imyourdream/Downloads/database_activity_report.sh
 ```
 
 #### backup otomatis berkala

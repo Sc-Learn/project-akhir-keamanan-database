@@ -142,7 +142,7 @@ find "$BACKUP_DIR" -type f -name "online_course_backup_*.sql" -mtime +$MAX_BACKU
 Menjadwalkan Backup Otomatis dengan Cron Job
 ```bash
 crontab -e
-0 2 * * * /home/supernova/study/bsi/project-akhir-keamanan-database/backup_database.sh
+0 2 * * * /home/supernova/study/bsi/project-akhir-keamanan-database/backup-database.sh
 ```
 
 #### Pemulihan data.
@@ -151,9 +151,8 @@ Script pemulihan data
 #!/bin/bash
 
 # Konfigurasi
-MYSQL_CONTAINER_NAME="mysql-container"   # Nama container MySQL di Docker
 MYSQL_USER="root"                         # Username MySQL
-MYSQL_PASSWORD="YourPassword"             # Password MySQL
+MYSQL_PASSWORD=""                         # Password MySQL (kosong untuk XAMPP default)
 MYSQL_DB_NAME="online_course"             # Nama database yang akan dipulihkan
 BACKUP_DIR="/path/to/backup"              # Direktori tempat backup disimpan
 BACKUP_FILE="online_course_2024-11-27.sql" # Nama file backup yang akan dipulihkan
@@ -166,7 +165,7 @@ fi
 
 # Pemulihan database
 echo "Mulai pemulihan database MySQL..."
-docker exec -i $MYSQL_CONTAINER_NAME mysql -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB_NAME < "$BACKUP_DIR/$BACKUP_FILE"
+/opt/lampp/bin/mysql -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB_NAME < "$BACKUP_DIR/$BACKUP_FILE"
 
 # Memeriksa apakah pemulihan berhasil
 if [ $? -eq 0 ]; then

@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Konfigurasi
-MYSQL_USER="root"
-MYSQL_PASSWORD=""
+MYSQL_USER="root"  # Default XAMPP MySQL username is 'root'
+MYSQL_PASSWORD=""  # Empty password because the user has no password
 MYSQL_DB_NAME="online_course"
-BACKUP_DIR="/home/supernova/Downloads/backup"
+BACKUP_DIR="/path/to/backup"
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 BACKUP_FILE="$BACKUP_DIR/online_course_backup_$DATE.sql"
-MAX_BACKUPS=3  # Maksimal file backup yang disimpan
+MAX_BACKUPS=7  # Maksimal file backup yang disimpan
 
 # Membuat direktori backup jika belum ada
 mkdir -p "$BACKUP_DIR"
@@ -24,5 +24,16 @@ else
     exit 1
 fi
 
-# Rotasi backup - Hapus backup yang lebih dari $MAX_BACKUPS hari
-find "$BACKUP_DIR" -type f -name "online_course_backup_*.sql" -mtime +$MAX_BACKUPS -exec rm {} \;
+# Rotasi backup - Hapus backup yang lebih dari $MAX_BACKUPS file
+BACKUP_FILES=($BACKUP_DIR/online_course_backup_*.sql)
+BACKUP_COUNT=${#BACKUP_FILES[@]}
+
+# Jika jumlah backup lebih banyak dari MAX_BACKUPS, hapus file yang paling lama
+if [ $BACKUP_COUNT -gt $MAX_BACKUPS ]; then
+    # Hitung jumlah file yang perlu dihapus
+    FILES_TO_DELETE=$((BACKUP_COUNT - MAX_BACKUPS))
+    
+    # Urutkan file berdasarkan tanggal dan hapus yang paling lama
+    echo "Menghapus $FILES_TO_DELETE file backup lama..."
+    ls -t $BACKUP_DIR/online_course_backup_*.sql | tail -n $FILES_TO_DELETE | xargs rm -f
+fi

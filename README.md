@@ -103,7 +103,7 @@ Anda bisa menyesuaikan script ini untuk mencari pola lain yang relevan, misalnya
 Automatisasi Laporan Berkala dengan Cron Job
 ```bash
 crontab -e
-0 8 * * * /home/imyourdream/Downloads/database_activity_report.sh
+0 8 * * * /home/supernova/study/bsi/project-akhir-keamanan-database/database_activity_report.sh
 ```
 
 #### backup otomatis berkala

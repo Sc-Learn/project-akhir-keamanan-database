@@ -2,7 +2,7 @@
 
 # Path ke file general log (sesuaikan path berdasarkan instalasi XAMPP Anda)
 LOG_FILE="/opt/lampp/var/mysql/general.log"
-REPORT_DIR="/home/supernova/Downloads"
+REPORT_DIR="/home/supernova/Downloads/report"
 REPORT_FILE="$REPORT_DIR/database_activity_report_$(date +%Y-%m-%d).txt"
 
 # Buat direktori laporan jika belum ada

@@ -142,7 +142,7 @@ find "$BACKUP_DIR" -type f -name "online_course_backup_*.sql" -mtime +$MAX_BACKU
 Menjadwalkan Backup Otomatis dengan Cron Job
 ```bash
 crontab -e
-0 2 * * * /path/to/backup-database.sh
+0 2 * * * /home/supernova/study/bsi/project-akhir-keamanan-database/backup-database.sh
 ```
 
 #### Pemulihan data.

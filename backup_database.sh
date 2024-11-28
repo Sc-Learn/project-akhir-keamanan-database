@@ -4,7 +4,7 @@
 MYSQL_USER="root"  # Default XAMPP MySQL username is 'root'
 MYSQL_PASSWORD=""  # Empty password because the user has no password
 MYSQL_DB_NAME="online_course"
-BACKUP_DIR="/path/to/backup"
+BACKUP_DIR="/home/supernova/Downloads/backup"
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 BACKUP_FILE="$BACKUP_DIR/online_course_backup_$DATE.sql"
 MAX_BACKUPS=7  # Maksimal file backup yang disimpan
